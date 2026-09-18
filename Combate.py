@@ -14,7 +14,10 @@ class Combate(Entidade):
         return f"Combate: {self.pokemonA.nome} x {self.pokemonB.nome} \nVencedor: {self.vencedor}"
         
     def duelar(self):
-        atacante = self.pokemonA
+        if self.pokemonA.velocidade > self.pokemonB.velocidade:
+            atacante = self.pokemonA
+        else:
+            atacante = self.pokemonB
 
         while self.nocauteado() is None:
             self.atacar(atacante)
