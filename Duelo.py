@@ -1,13 +1,16 @@
-import Entidade.py
-import Combate.py
-import Pokemon.py
+from Entidade import Entidade
+from Combate import Combate
+from Pokemon import Pokemon
+
 
 class Duelo(Entidade):
+
     def __init__(self, id, treinadorA, treinadorB):
         super().__init__(id)
 
         self.treinadorA = treinadorA
         self.treinadorB = treinadorB
+
         self.timeA = []
         self.timeB = []
 
@@ -15,22 +18,31 @@ class Duelo(Entidade):
         self.vencedor = None
 
     def __str__(self):
-        return(
-            f"Duelo [ID:{self.id},"
-            f"{self.treinadorA.nome} x {self.treinadorB.nome},"
-            f"Time A:{self.timeA[0].nome}, {self.timeA[1].nome}, {self.timeA[2].nome},"
-            f"Time B:{self.timeB[0].nome}, {self.timeB[1].nome}, {self.timeB[2].nome},"
-            f"Vencedor: {self.vencedor}]"
+        return (
+            f"Duelo [ID:{self.id}, "
+            f"{self.treinadorA.nome} x {self.treinadorB.nome}, "
+            f"Time A:{self.timeA[0].nome}, {self.timeA[1].nome}, {self.timeA[2].nome}, "
+            f"Time B:{self.timeB[0].nome}, {self.timeB[1].nome}, {self.timeB[2].nome}, "
+            f"Vencedor:{self.vencedor}]"
         )
+
+    def adicionar_combate(self, combate):
+        self.combates.append(combate)
+
+    def remover_combate(self, combate):
+        if combate in self.combates:
+            self.combates.remove(combate)
+
     def iniciar(self):
 
-        while len(self.timeA) > 0 and len(self.timeA) > 0:
+        while len(self.timeA) > 0 and len(self.timeB) > 0:
+
             pokemonA = self.timeA[0]
             pokemonB = self.timeB[0]
 
             combate = Combate(pokemonA, pokemonB)
 
-            self.combates.append(combate)
+            self.adicionar_combate(combate)
 
             vencedor_combate = combate.duelar()
 
@@ -44,35 +56,38 @@ class Duelo(Entidade):
         else:
             self.vencedor = self.treinadorA
 
-            return self.vencedor
+        return self.vencedor
 
     def times(self):
+        
         print(f"Escolha os Pokemons do {self.treinadorA.nome}:")
 
         for i in range(3):
-            id_pokemon = int(input(f"{i+1}° Pokemon:"))
-            #procura no banco de dados o id do pokemon
-            pokemon  = DAO_pokemon.buscar(id_pokemon)
+            id_pokemon = int(input(f"{i + 1}° Pokemon: "))
 
-            while id_pokemon is None:
-                print(f"O id: {id_pokemon} nao foi encontrado, digite outro")
-                id_pokemon = int(input(f"{i+1}° Pokemon:"))
-                pokemon  = DAO_pokemon.buscar(id_pokemon)
+            pokemon = DAO_pokemon.buscar(id_pokemon)
+
+            while pokemon is None:
+                print(f"O id {id_pokemon} nao foi encontrado. Digite outro.")
+
+                id_pokemon = int(input(f"{i + 1}° Pokemon: "))
+                pokemon = DAO_pokemon.buscar(id_pokemon)
 
             self.timeA.append(pokemon)
-        f"Escolha os Pokemons do(a) {self.treinadorB.nome}:"
-        
+
+        print(f"\nEscolha os Pokemons do(a) {self.treinadorB.nome}:")
+
         for i in range(3):
-            id_pokemon = int(input(f"{i+1}° Pokemon:"))
-            
-            pokemon  = DAO_pokemon.buscar(id_pokemon)
-            
-            while id_pokemon is None:
-                print(f"O id: {id_pokemon} nao foi encontrado, digite outro")
-                id_pokemon = int(input(f"{i+1}° Pokemon:"))
-                pokemon  = DAO_pokemon.buscar(id_pokemon)
-        
+            id_pokemon = int(input(f"{i + 1}° Pokemon: "))
+
+            pokemon = DAO_pokemon.buscar(id_pokemon)
+
+            while pokemon is None:
+                print(f"O id {id_pokemon} nao foi encontrado. Digite outro.")
+
+                id_pokemon = int(input(f"{i + 1}° Pokemon: "))
+                pokemon = DAO_pokemon.buscar(id_pokemon)
+
             self.timeB.append(pokemon)
-                
-                
             
+
