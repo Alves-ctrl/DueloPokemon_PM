@@ -1,3 +1,12 @@
+Exigências do professor:
+Entidade → construtores e toString (__str__).
+Cada classe filha → deve implementar seus comportamentos necessários e ter associação com outra classe filha de Entidade.
+Duelo (transação) → precisa ter métodos para adicionar e remover objetos de Combate.
+Duelo → também terá os métodos necessários para montar times/iniciar o duelo.
+Combate → precisa ter seus métodos para realizar um combate.
+EntidadeDAO → precisa implementar salvar, atualizar, apagar, buscar, carregar, persistir e recuperar.
+
+
 COMPONENTES:
 
 Relacionamentos:
