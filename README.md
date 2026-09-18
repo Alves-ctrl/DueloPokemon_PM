@@ -1,5 +1,10 @@
 COMPONENTES:
 
+Relacionamentos:
+Duelo ->Treinador
+Duelo ->Pokémon
+Duelo ->Combate
+
 Resumo das Funções de cada Classe:
 Pokemon -> dados do Pokemon.
 Treinador -> dados do treinador.
