@@ -1,4 +1,4 @@
-import Entidade.py
+from Entidade import Entidade
 
 class Treinador(Entidade):
     def __init__(self, id, nome):

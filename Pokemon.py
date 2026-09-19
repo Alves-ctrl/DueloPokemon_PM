@@ -1,4 +1,4 @@
-import Entidade.py
+from Entidade import Entidade
 
 class Pokemon(Entidade):
     def __init__(self, id, nome,tipo, fraqueza, resistencia, ataque, defesa, vida, velocidade):
