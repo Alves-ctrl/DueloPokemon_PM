@@ -1,5 +1,5 @@
-from Entidade import Entidade
-from CombateAcao import CombateAcao
+from Classe_Entidade import Entidade
+from Classe_CombateAcao import CombateAcao
 
 class Combate(Entidade):
 
@@ -13,6 +13,8 @@ class Combate(Entidade):
 
         self.timeA = []
         self.timeB = []
+        self.pokemonA = None
+        self.pokemonB = None
 
     def __str__(self):
          return (
@@ -29,7 +31,7 @@ class Combate(Entidade):
 
     def delAcao(self,acao):
         if acao in self.movimentos:
-            self.movimento.remove(acao)
+            self.movimentos.remove(acao)
 
     def buscarAcao(self,indice):
         if 0 <= indice < len(self.movimentos):
