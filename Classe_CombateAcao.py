@@ -1,4 +1,4 @@
-from Entidade import Entidade
+from Classe_Entidade import Entidade
 
 class CombateAcao:
 
