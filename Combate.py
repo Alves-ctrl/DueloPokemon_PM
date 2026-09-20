@@ -3,25 +3,26 @@ from CombateAcao import CombateAcao
 
 class Combate(Entidade):
 
-    def __init__(self, id, pokemonA, pokemonB):
+    def __init__(self, id):
         super().__init__(id)
-        self.pokemonA = pokemonA
-        self.pokemonB = pokemonB
-
-        self.vidaA = pokemonA.vida
-        self.vidaB = pokemonB.vida
+        
+        self.vidas = {}
 
         self.movimentos = []
         self.vencedor = None
+
+        self.timeA = []
+        self.timeB = []
 
     def __str__(self):
          return (
             f"Combate [ID: {self.id}, "
             f"{self.pokemon_a.nome} x {self.pokemon_b.nome}, "
-            f"Vida {self.pokemon_a.nome}: {self.vida_pokemon_a}, "
-            f"Vida {self.pokemon_b.nome}: {self.vida_pokemon_b}, "
+            f"Vida {self.pokemonA.nome}: {self.vidas[self.pokemonA]}, "
+            f"Vida {self.pokemonB.nome}: {self.vidas[self.pokemonB]}, "
             f"Vencedor: {self.vencedor}]"
         )
+
 
     def addAcao(self,acao):
         self.movimentos.append(acao)
@@ -46,34 +47,91 @@ class Combate(Entidade):
         return self.movimentos
 
 
-    def duelar(self):
-        if self.pokemonA.velocidade > self.pokemonB.velocidade:
-            atacante = self.pokemonA
-            defensor = self.pokemonB
-        else:
-            atacante = self.pokemonB
-            defensor = self.pokemonA
+    def draft(self):
+        print("Escolha os 3 Pokémons do Time A:")
 
+        for i in range(3):
+            id_pokemon = int(input(f"{i + 1}º Pokémon: "))
+
+            pokemon = DAO_pokemon.buscar(id_pokemon)
+
+            while pokemon is None:
+                print(f"O ID {id_pokemon} não foi encontrado.")
+                id_pokemon = int(input(f"{i + 1}º Pokémon: "))
+                pokemon = DAO_pokemon.buscar(id_pokemon)
+
+            self.timeA.append(pokemon)
+            self.vidas[pokemon] = pokemon.vida
+
+        print("\nEscolha os 3 Pokémons do Time B:")
+
+        for i in range(3):
+            id_pokemon = int(input(f"{i + 1}º Pokémon: "))
+
+            pokemon = DAO_pokemon.buscar(id_pokemon)
+
+            while pokemon is None:
+                print(f"O ID {id_pokemon} não foi encontrado.")
+                id_pokemon = int(input(f"{i + 1}º Pokémon: "))
+                pokemon = DAO_pokemon.buscar(id_pokemon)
+
+            self.timeB.append(pokemon)
+            self.vidas[pokemon] = pokemon.vida
+
+    def duelar(self):
+
+        self.draft()
+
+        while len(self.timeA) > 0 and len(self.timeB) > 0:
+            self.pokemonA = self.timeA[0]
+            self.pokemonB = self.timeB[0]
+
+            vencedor = self.dueloPokemon(self.pokemonA, self.pokemonB)
+
+            if vencedor == self.pokemonA:
+                self.timeB.pop(0)
+            else:
+                self.timeA.pop(0)
+
+        if len(self.timeA) == 0:
+            self.vencedor = "Time B"
+        else:
+            self.vencedor = "Time A"
+
+        return self.vencedor
+        
+
+    def dueloPokemon(self, pokemonA, pokemonB):
+        if pokemonA.velocidade > pokemonB.velocidade:
+            atacante = pokemonA
+            defensor = pokemonB
+        else:
+            atacante = pokemonB
+            defensor = pokemonA
+        
         while self.nocauteado() is None:
             acao = None
-
+            #adicionar o banco de dados
+        
             self.atacar(atacante, defensor, acao)
             if self.nocauteado() is not None:
                 break
-            atacante,defensor = defensor, atacante
 
-        return  self.vencedor()
+            atacante,defensor = defensor, atacante
+        
+        return  self.winner()
 
     def atacar(self, atacante, defensor, acao):
         crit = 1.5
-        fraco = 0,75
+        fraco = 0.75
 
-        dano = atacante.ataque
+        AD = atacante.ataque
         if atacante.tipo == defensor.fraqueza:
-            dano = dano * crit
+            AD = AD * crit
         elif atacante.tipo == defensor.resistencia:
-            dano = dano * fraco
+            AD = AD * fraco
 
+        dano = AD - defensor.defesa
         if dano < 0:
             dano = 0
 
@@ -84,31 +142,26 @@ class Combate(Entidade):
         self.defender(defensor, dano)
 
     def defender(self, defensor, dano):
-        if defensor == self.pokemonA:
-            self.vidaA -= dano
+        self.vidas[defensor] -= dano
 
-            if self.vidaA < 0:
-                self.vidaA = 0
-        if defensor == self.pokemonB:
-            self.vidaB -= dano
-        
-            if self.vidaB < 0:
-                self.vidaB = 0
+        if self.vidas[defensor] < 0:
+            self.vidas[defensor] = 0
 
     def nocauteado(self):
 
-        if self.VidaA == 0:
+        if self.vidas[self.pokemonA] == 0:
             return self.pokemonA
-        if self.VidaB == 0:
+
+        if self.vidas[self.pokemonB] == 0:
             return self.pokemonB
 
         return None
 
-    def vencedor(self):
+    def winner(self):
         derrotado = self.nocauteado()
         if derrotado == self.pokemonA:
-            self.vencedor = self.pokemonA
-        if derrotado == self.pokemonB:
             self.vencedor = self.pokemonB
+        elif derrotado == self.pokemonB:
+            self.vencedor = self.pokemonA
 
-            return self.vencedor
+        return self.vencedor
