@@ -1,9 +1,9 @@
-from visao.Visao import Visao
+from Menu import menu
 
 
 def main():
-    visao = Visao()
-    visao.iniciar()
+    menu = menu()
+    menu.iniciar()
 
 
 if __name__ == "__main__":
