@@ -1,3 +1,15 @@
+O QUE ESTA FALTANDO:
+1- terminar os menus
+2-terminar o banco de dados
+3-terminar de polir as classes
+
+
+
+
+
+
+
+
 1-EXIGENCIAS DO PROFESSOR
 
 Entidade deve possuir construtores com e sem id e o método __str__().
