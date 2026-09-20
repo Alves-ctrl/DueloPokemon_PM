@@ -1,5 +1,5 @@
 import pickle
-from pokemon import Entidade
+from Classe_Entidade import Entidade
 
 class EntidadeDAO:
     _instancias = {}
