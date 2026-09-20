@@ -1,4 +1,4 @@
-from Entidade import Entidade
+from Classe_Entidade import Entidade
 
 class Pokemon(Entidade):
     def __init__(self, id, nome,tipo, fraqueza, resistencia, ataque, defesa, vida, velocidade):
@@ -17,7 +17,7 @@ class Pokemon(Entidade):
             f"Pokemon [ID:{self.id}, Nome:{self.nome},"
             f" Vida:{self.vida}, Tipo:{self.tipo},"
             f" Fraqueza:{self.fraqueza}, Resistencia:{self.resistencia},"
-            f" Ataque:{self.ataque}, Defesa:{self.defesa}, Valocidade:{self.velocidade}]"
+            f" Ataque:{self.ataque}, Defesa:{self.defesa}, Velocidade:{self.velocidade}]"
         )
 
     
