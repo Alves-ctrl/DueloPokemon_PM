@@ -1,12 +1,14 @@
-from Classes import Pokemon
-from Classes import Acoes
-from Classes import Combate
+from Classe_Pokemon import Pokemon
+from Classe_Acao import Acoes
+from Classe_Combate import Combate
 
 
 class Menu:
 
     def iniciar(self):
+
         while True:
+
             print("\n========== MENU PRINCIPAL ===========")
             print("1 - Pokémon")
             print("2 - Ação")
@@ -32,8 +34,11 @@ class Menu:
             else:
                 print("Opção inválida.")
 
+
     def menu_pokemon(self):
+
         while True:
+
             print("\n============= POKÉMON ===============")
             print("1 - Inserir")
             print("2 - Alterar")
@@ -66,8 +71,11 @@ class Menu:
             else:
                 print("Opção inválida.")
 
+
     def menu_acao(self):
+
         while True:
+
             print("\n=============== AÇÃO ================")
             print("1 - Inserir")
             print("2 - Alterar")
@@ -76,6 +84,7 @@ class Menu:
             print("5 - Listar todos")
             print("0 - Voltar")
             print("\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
+
             opcao = input("Escolha uma opção: ")
 
             if opcao == "1":
@@ -99,8 +108,11 @@ class Menu:
             else:
                 print("Opção inválida.")
 
+
     def menu_combate(self):
+
         while True:
+
             print("\n============== COMBATE ==============")
             print("1 - Inserir")
             print("2 - Alterar")
@@ -109,6 +121,7 @@ class Menu:
             print("5 - Listar todos")
             print("0 - Voltar")
             print("\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
+
             opcao = input("Escolha uma opção: ")
 
             if opcao == "1":
@@ -132,7 +145,7 @@ class Menu:
             else:
                 print("Opção inválida.")
 
-    # POKÉMON
+
     def inserir_pokemon(self):
         print("\n--- Inserir Pokémon ---")
         pass
@@ -153,8 +166,7 @@ class Menu:
         print("\n--- Lista de Pokémon ---")
         pass
 
-  
-    # AÇÃO
+
     def inserir_acao(self):
         print("\n--- Inserir Ação ---")
         pass
@@ -176,7 +188,6 @@ class Menu:
         pass
 
 
-    # COMBATE
     def inserir_combate(self):
         print("\n--- Inserir Combate ---")
         pass

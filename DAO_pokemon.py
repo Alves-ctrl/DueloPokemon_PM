@@ -1,4 +1,4 @@
-from Pokemon import Pokemon
+from Classe_Pokemon import Pokemon
 
 
 class DAO_pokemon:
@@ -80,15 +80,15 @@ class DAO_pokemon:
 
     @classmethod
     def buscar(cls, id_pokemon: int):
-        #Busca e retorna o Pokemon correspondente ao ID .
+       
         return cls._banco_dados.get(id_pokemon, None)
 
     @classmethod
     def listar_todos(cls):
-        #Retorna a lista de todos os Pokemons cadastrados.
+        
         return list(cls._banco_dados.values())
 
     @classmethod
     def inserir(cls, pokemon: Pokemon):
-        #Adiciona um novo Pokemon ao banco de dados.
+       
         cls._banco_dados[pokemon.id] = pokemon

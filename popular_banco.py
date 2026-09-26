@@ -1,6 +1,6 @@
 
 from DAO_pokemon import DAO_pokemon
-from Pokemon import Pokemon
+from Classe_Pokemon import Pokemon
 
 
 DAO_pokemon.criar_tabela()

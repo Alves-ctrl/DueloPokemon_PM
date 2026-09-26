@@ -1,8 +1,8 @@
-from Menu import menu
+from menu import Menu
 
 
 def main():
-    menu = menu()
+    menu = Menu()
     menu.iniciar()
 
 
