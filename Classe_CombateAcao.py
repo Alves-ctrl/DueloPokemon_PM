@@ -1,22 +1,67 @@
-from Classe_Entidade import Entidade
 
+class CombateAcao:
 
-class CombateAcao(Entidade):
+    def __init__(self, id, rodada, atacante, alvo, ataque,
+                 acertou=False, danoCausado=0,
+                 efeitosAplicados=None, estadoAnterior=None):
 
-    def __init__(self, id, atacante, acao, dano):
-        super().__init__(id)
-
+        self.id = id
+        self.rodada = rodada
         self.atacante = atacante
-        self.acao = acao
-        self.dano = dano
+        self.alvo = alvo
+        self.ataque = ataque
+        self.acertou = acertou
+        self.danoCausado = danoCausado
+
+        self.efeitosAplicados = (
+            efeitosAplicados.copy()
+            if efeitosAplicados is not None else []
+        )
+
+        self.estadoAnterior = estadoAnterior
 
     def __str__(self):
+        return self.obterResumo()
 
-        nome_acao = self.acao.nome if self.acao else "Ataque básico"
+    def obterResumo(self):
+
+        if self.ataque is None:
+            return (
+                f"Rodada {self.rodada}: "
+                f"{self.atacante.pokemon.nome} estava atordoado "
+                f"e perdeu seu turno."
+            )
+
+        if not self.acertou:
+            return (
+                f"Rodada {self.rodada}: "
+                f"{self.atacante.pokemon.nome} usou "
+                f"{self.ataque.nome}, mas errou!"
+            )
 
         return (
-            f"CombateAcao [ID: {self.id}, "
-            f"Atacante: {self.atacante.nome}, "
-            f"Ação: {nome_acao}, "
-            f"Dano: {self.dano}]"
+            f"Rodada {self.rodada}: "
+            f"{self.atacante.pokemon.nome} usou "
+            f"{self.ataque.nome} em "
+            f"{self.alvo.pokemon.nome} e causou "
+            f"{self.danoCausado} de dano."
         )
+
+    '''
+Atributos
+
+-id,int	;Identificador da ação dentro do combate.
+-rodada,int;Rodada em que a ação ocorreu.
+-atacante,Pokemon;Pokémon que executou o ataque.
+-alvo,Pokemon;Pokémon que recebeu o ataque.
+-ataque,Acoes;Ataque escolhido.
+-acertou,bool;Indica se o ataque acertou.
+-danoCausado,int;Dano total efetivamente causado.
+-efeitosAplicados,list;Efeitos que foram ativados.
+-estadoAnterior,dict;Estado do combate antes da execução da ação.
+
+Métodos 
+__init__(...);Inicializa o registro da ação.
+__str__();Retorna uma descrição do que aconteceu.
+obterResumo();Retorna um resumo da ação para o histórico.
+    '''
