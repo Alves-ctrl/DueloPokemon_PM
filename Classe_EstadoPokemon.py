@@ -1,69 +1,83 @@
 class EstadoPokemon:
-    def __init__(self,pokemon):
+
+    def __init__(self, pokemon):
         self.pokemon = pokemon
-        self.vidaAtual = pokemon.vidaMax
+        self.vidaAtual = pokemon.vidaMaxima
         self.defesaAtual = float(pokemon.defesa)
 
-        self.ultimoAtk= None
-        self.ultimoAtkTentado = None
+        # Histórico utilizado para validar ataques consecutivos.
+        self.ultimoAtaque = None
+        self.ultimoAtaqueTentado = None
+        self.ultimoAtaqueTentadoAcertou = False
 
+        # Registros dos efeitos temporários.
         self.efeitosAtivos = []
 
     def __str__(self):
-        nomes_efeitos = [r["efeito"].tipo for r in self.efeitosAtivos]
+        nomes_efeitos = []
 
-        return(
+        for registro in self.efeitosAtivos:
+            nomes_efeitos.append(registro["efeito"].tipo)
+
+        return (
             f"EstadoPokemon [Nome: {self.pokemon.nome}, "
-            f"Vida: {self.vidaAtual}/{self.pokemon.vidaMax}, "
+            f"Vida: {self.vidaAtual}/{self.pokemon.vidaMaxima}, "
             f"Defesa: {self.defesaAtual}%, "
             f"Efeitos: {', '.join(nomes_efeitos) if nomes_efeitos else 'Nenhum'}]"
-            #a funcao join juntar os elementos de uma lista em uma única string, separando-os por vírgula e espaço
         )
 
-    def recebeDano(self, dano):
+    def receberDano(self, dano):
         if dano < 0:
             return False
+
         self.vidaAtual = max(0, self.vidaAtual - dano)
-        #pega o menor valor entre zero e o dano, pois o dano nao pode ser menor que zero
         return True
 
-    def recuperarVida(self,valor):
+    def recuperarVida(self, valor):
         if valor < 0:
             return False
 
-       self.vidaAtual = min(self.pokemon.vidaMax, self.vidaAtual + valor)
-    #pega o menor valor entre vida maxima e vida atual, pois a cura nao pode utrapassar a vida maxima
+        self.vidaAtual = min(
+            self.pokemon.vidaMaxima,
+            self.vidaAtual + valor
+        )
         return True
 
-    def derrotado(self):
+    def estaDerrotado(self):
         return self.vidaAtual <= 0
 
-    def atordoado(self):
+    def estaAtordoado(self):
         return self.buscarEfeito("ATORDOAMENTO") is not None
-        #verifica se o pokemon esta com o efeito atordoamento ativo
 
-    def addEfeito(self, efeito):
+    def adicionarEfeito(self, efeito):
         if efeito is None:
-            #verifica se existe efeito
             return False
 
         registro = self.buscarEfeito(efeito.tipo)
 
+        restante = (
+            efeito.duracao
+            if type(efeito.duracao) is int
+            else None
+        )
+
+        novoRegistro = {
+            "efeito": efeito,
+            "restante": restante
+        }
+
         if registro is not None:
-            #verifica se o efeito ja esta ativo e o atualiza
-            registro["efeito"] = efeito
-            #adicionar que a duracao do efeito eh renovada
+            # Renova o efeito, descartando os dados
+            # temporários da aplicação anterior.
+            registro.clear()
+            registro.update(novoRegistro)
             return True
 
-    #adiciona em efeitosAtivos o efeito e sua duracao
-        self.efeitosAtivos.append({
-            "efeito": efeito,
-            "restante": None
-        })
-
+        self.efeitosAtivos.append(novoRegistro)
         return True
 
-    def removerEfeito(self,tipo):
+
+    def removerEfeito(self, tipo):
         registro = self.buscarEfeito(tipo)
 
         if registro is None:
@@ -76,14 +90,16 @@ class EstadoPokemon:
         for registro in self.efeitosAtivos:
             if registro["efeito"].tipo == tipo:
                 return registro
+
         return None
 
     def salvarEstado(self):
         return {
             "vidaAtual": self.vidaAtual,
             "defesaAtual": self.defesaAtual,
-            "ultimoAtaque": self.ultimoAtk,
-            "ultimoAtaqueTentado": self.ultimoAtkTentado,
+            "ultimoAtaque": self.ultimoAtaque,
+            "ultimoAtaqueTentado": self.ultimoAtaqueTentado,
+            "ultimoAtaqueTentadoAcertou": self.ultimoAtaqueTentadoAcertou,
             "efeitosAtivos": [
                 registro.copy()
                 for registro in self.efeitosAtivos
@@ -96,11 +112,18 @@ class EstadoPokemon:
 
         self.ultimoAtaque = estado["ultimoAtaque"]
         self.ultimoAtaqueTentado = estado["ultimoAtaqueTentado"]
+        self.ultimoAtaqueTentadoAcertou = estado[
+            "ultimoAtaqueTentadoAcertou"
+        ]
 
         self.efeitosAtivos = [
             registro.copy()
             for registro in estado["efeitosAtivos"]
         ]
+
+
+
+
 '''
 
 Surge para diminuir a quantidade de codigo dentro de combate
