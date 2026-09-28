@@ -1,6 +1,7 @@
 class Acoes:
 
-    def __init__(self, id, nome, tipo, categoria, dano, precisao, efeitos=None, bloqSeq=False):
+    def __init__(self, id, nome, tipo, categoria, dano, precisao,
+                 efeitos=None, bloqueiaSequencia=False):
         self.id = id
         self.nome = nome
         self.tipo = tipo
@@ -8,32 +9,30 @@ class Acoes:
         self.dano = dano
         self.precisao = precisao
 
+        # Copia a lista, mas mantém os mesmos objetos Efeitos do catálogo.
         self.efeitos = efeitos.copy() if efeitos is not None else []
-        #atribuimos apenas a copia dos efeitos, para que o objeto original nao seja alterado, tambem pode ser None
-        self.bloqSeq = bloqSeq
+        self.bloqueiaSequencia = bloqueiaSequencia
 
     def __str__(self):
         nomes_efeitos = [efeito.tipo for efeito in self.efeitos]
 
-        return(
-             f"Ação [ID: {self.id}, "
+        return (
+            f"Ação [ID: {self.id}, "
             f"Nome: {self.nome}, "
             f"Tipo: {self.tipo}, "
             f"Categoria: {self.categoria}, "
             f"Dano: {self.dano if self.dano is not None else 'ATQ do Pokémon'}, "
             f"Precisão: {self.precisao}%, "
             f"Efeitos: {', '.join(nomes_efeitos) if nomes_efeitos else 'Nenhum'}, "
-            f"Bloqueia sequência: {self.bloqSeq}]"
+            f"Bloqueia sequência: {self.bloqueiaSequencia}]"
         )
 
     def obterDanoBase(self, pokemon):
         if self.categoria == "BASICO":
-            #se for um ataque tipo basico, retorna o atributo de ataque do pokemon, se nao, retorna o dano dele
             return pokemon.ataque
-        else:
-            return self.dano
 
-        
+        return self.dano
+
 
     '''
     A classe Acoes representa os ataques disponíveis para os Pokémon. Ela armazena as características de cada ataque, mas não realiza o cálculo de dano nem modifica os Pokémon.
