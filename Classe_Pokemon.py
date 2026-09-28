@@ -1,9 +1,11 @@
-class Pokemon:
+from Classe_Entidade import Entidade
 
-    def __init__(
-        self, id, nome, tipo, fraqueza, resistencia,
-        ataque, defesa, vidaMaxima, velocidade, ataques=None
-    ):
+class Pokemon(Entidade):
+
+    def __init__(self, id, nome, tipo, fraqueza, resistencia,
+                 ataque, defesa, vidaMaxima, velocidade, ataques=None):
+        super().__init__(id)
+    
         self.id = id
         self.nome = nome
         self.tipo = tipo
