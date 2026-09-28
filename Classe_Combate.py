@@ -855,8 +855,3 @@ class Combate(Entidade):
         self.avancarTurno(alvo.estaDerrotado())
 
         return acao
-
-
-            self.vencedor = self.pokemonA
-
-        return self.vencedor
