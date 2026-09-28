@@ -1,10 +1,13 @@
+import random
 from Classe_Entidade import Entidade
-from DAO_pokemon import DAO_pokemon
+from Classe_EstadoPokemon import EstadoPokemon
 from Classe_CombateAcao import CombateAcao
 
 
 class Combate(Entidade):
-
+     
+    MAX_TURNOS = 200
+    
     def __init__(self, id):
 
         super().__init__(id)
@@ -72,91 +75,24 @@ class Combate(Entidade):
         return self.movimentos
 
 
-    def draft(self):
-
-        print("\nEscolha os 3 Pokémons do Time A:")
-
-        for i in range(3):
-
-            id_pokemon = int(
-                input(f"{i + 1}º Pokémon: ")
-            )
-
-            pokemon = DAO_pokemon.buscar(id_pokemon)
-
-            while pokemon is None:
-
-                print(
-                    f"O ID {id_pokemon} não foi encontrado."
-                )
-
-                id_pokemon = int(
-                    input(f"{i + 1}º Pokémon: ")
-                )
-
-                pokemon = DAO_pokemon.buscar(id_pokemon)
-
-            self.timeA.append(pokemon)
-            self.vidas[pokemon] = pokemon.vida
-
-        print("\nEscolha os 3 Pokémons do Time B:")
-
-        for i in range(3):
-
-            id_pokemon = int(
-                input(f"{i + 1}º Pokémon: ")
-            )
-
-            pokemon = DAO_pokemon.buscar(id_pokemon)
-
-            while pokemon is None:
-
-                print(
-                    f"O ID {id_pokemon} não foi encontrado."
-                )
-
-                id_pokemon = int(
-                    input(f"{i + 1}º Pokémon: ")
-                )
-
-                pokemon = DAO_pokemon.buscar(id_pokemon)
-
-            self.timeB.append(pokemon)
-            self.vidas[pokemon] = pokemon.vida
+    def definirTimes(self, pokemonsA, pokemonsB):
+        self.timeA = [EstadoPokemon(p) for p in pokemonsA]
+        self.timeB = [EstadoPokemon(p) for p in pokemonsB]
 
 
     def duelar(self):
-
-        self.draft()
-
-        while len(self.timeA) > 0 and len(self.timeB) > 0:
-
+        
+        while self.timeA and self.timeB:
             self.pokemonA = self.timeA[0]
             self.pokemonB = self.timeB[0]
-
-            vencedor = self.dueloPokemon(
-                self.pokemonA,
-                self.pokemonB
-            )
-
-            if vencedor == self.pokemonA:
-
+            vencedor = self.dueloPokemon(self.pokemonA, self.pokemonB)
+            if vencedor is self.pokemonA:
                 self.timeB.pop(0)
-
-            else:
-
+        else:
                 self.timeA.pop(0)
 
-        if len(self.timeA) == 0:
-
-            self.vencedor = "Time B"
-
-        else:
-
-            self.vencedor = "Time A"
-
-        return self.vencedor
-
+    self.vencedor = "Time A" if self.timeA else "Time B"
+    return self.vencedor
 
     def dueloPokemon(self, pokemonA, pokemonB):
 
