@@ -1,9 +1,10 @@
-
-from DAO_pokemon import DAO_pokemon
+from DAO_Entidade import EntidadeDAO
 from Classe_Pokemon import Pokemon
 
 
-DAO_pokemon.criar_tabela()
+dao_pokemon = EntidadeDAO.get_instancia(Pokemon)
+dao_pokemon.recuperar() 
+
 
 
 pokemons = [
@@ -81,12 +82,8 @@ pokemons = [
     )
 ]
 
+for p in pokemons:
+    dao_pokemon.salvar(p)
 
-for pokemon in pokemons:
-
-    if DAO_pokemon.buscar(pokemon.id) is None:
-        DAO_pokemon.inserir(pokemon)
-
-
-print("Banco de dados criado e populado!")
-
+dao_pokemon.persistir()
+print(f"Banco de dados populado com {len(dao_pokemon.carregar())} Pokemon(s)!")
