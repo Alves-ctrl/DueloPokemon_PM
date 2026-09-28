@@ -1,3 +1,5 @@
+from Classe_Entidade import Entidade
+
 class Pokemon:
     def __init__(self, id, nome, tipo, fraq, resis, atk, defesa, vidaMax, vel, ataques=None):
         self.id = id
@@ -38,8 +40,7 @@ class Pokemon:
         return None
 
     def listAtaques(self):
-        return self.ataques.copy()
-    
+        return list(self.ataques)    
 '''
 A classe Pokemon representará os dados originais de cada Pokémon. Ela não herdará de Entidade, pois os Pokémon serão predefinidos e não terão um cadastro próprio na interface.
 Mesmo assim, cada Pokémon terá um id para ser identificado e selecionado pelo usuário.
