@@ -1,46 +1,50 @@
-from Classe_Entidade import Entidade
-
 class Pokemon:
-    def __init__(self, id, nome, tipo, fraq, resis, atk, defesa, vidaMax, vel, ataques=None):
+
+    def __init__(
+        self, id, nome, tipo, fraqueza, resistencia,
+        ataque, defesa, vidaMaxima, velocidade, ataques=None
+    ):
         self.id = id
         self.nome = nome
         self.tipo = tipo
-        self.fraq = fraq
-        self.resis = resis
-        self.atk = atk
+        self.fraqueza = fraqueza
+        self.resistencia = resistencia
+        self.ataque = ataque
         self.defesa = defesa
-        self.vidaMax = vidaMax
-        self.vel = vel
+        self.vidaMaxima = vidaMaxima
+        self.velocidade = velocidade
+
+        # Copia a lista, mantendo os objetos Acoes compartilhados.
         self.ataques = ataques.copy() if ataques is not None else []
-        #colocamos apenas uma copia dos ataques dos pokemons, para nao modifcar o obejto original. Tambem ha a opção da 
-        #lista de ataques estar vazia
 
     def __str__(self):
         nomes_ataques = [ataque.nome for ataque in self.ataques]
+
         return (
             f"Pokemon [ID: {self.id}, "
             f"Nome: {self.nome}, "
             f"Tipo: {self.tipo}, "
-            f"Vida Máxima: {self.vidaMax}, "
-            f"Ataque: {self.atk}, "
+            f"Vida Máxima: {self.vidaMaxima}, "
+            f"Ataque: {self.ataque}, "
             f"Defesa: {self.defesa}%, "
-            f"Velocidade: {self.vel}, "
-            f"Fraqueza: {self.fraq}, "
-            f"Resistência: {self.resis}, "
+            f"Velocidade: {self.velocidade}, "
+            f"Fraqueza: {self.fraqueza}, "
+            f"Resistência: {self.resistencia}, "
             f"Ataques: {', '.join(nomes_ataques)}]"
-            #a funcao join juntar os elementos de uma lista em uma única string, separando-os por vírgula e espaço
         )
 
-    def obterAtaque(self,nome):
+    def obterAtaque(self, nome):
         for ataque in self.ataques:
-            #retorna o ataque de acordo com seu nome
             if ataque.nome == nome:
                 return ataque
 
         return None
 
-    def listAtaques(self):
-        return list(self.ataques)    
+    def listarAtaques(self):
+        return self.ataques.copy()
+
+
+
 '''
 A classe Pokemon representará os dados originais de cada Pokémon. Ela não herdará de Entidade, pois os Pokémon serão predefinidos e não terão um cadastro próprio na interface.
 Mesmo assim, cada Pokémon terá um id para ser identificado e selecionado pelo usuário.
