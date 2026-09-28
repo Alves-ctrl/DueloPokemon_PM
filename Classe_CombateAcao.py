@@ -1,5 +1,5 @@
-
 class CombateAcao:
+    """Registra uma ação executada durante um combate."""
 
     def __init__(self, id, rodada, atacante, alvo, ataque,
                  acertou=False, danoCausado=0,
@@ -13,11 +13,15 @@ class CombateAcao:
         self.acertou = acertou
         self.danoCausado = danoCausado
 
-        self.efeitosAplicados = (
-            efeitosAplicados.copy()
-            if efeitosAplicados is not None else []
-        )
+        # Copia a lista e os registros para preservar o histórico.
+        self.efeitosAplicados = [
+            registro.copy() if isinstance(registro, dict) else registro
+            for registro in (
+                efeitosAplicados if efeitosAplicados is not None else []
+            )
+        ]
 
+        # Estado do combate antes da execução da ação.
         self.estadoAnterior = estadoAnterior
 
     def __str__(self):
@@ -39,7 +43,7 @@ class CombateAcao:
                 f"{self.ataque.nome}, mas errou!"
             )
 
-        return (
+        resumo = (
             f"Rodada {self.rodada}: "
             f"{self.atacante.pokemon.nome} usou "
             f"{self.ataque.nome} em "
@@ -47,6 +51,17 @@ class CombateAcao:
             f"{self.danoCausado} de dano."
         )
 
+        if self.efeitosAplicados:
+            nomes = ", ".join(
+                registro["tipo"]
+                if isinstance(registro, dict)
+                else str(registro)
+                for registro in self.efeitosAplicados
+            )
+
+            resumo += f" Efeitos ativados: {nomes}."
+
+        return resumo
     '''
 Atributos
 
