@@ -23,10 +23,8 @@ class Efeitos:
         )
 
     def verificaProb(self):
-        sorteio = random.randint(1,100)
-        #se for menor ou igual que a prob, acerta
-        return sorteio <= self.prob
-    
+        return random.randint(1, 100) <= self.prob
+        
     def verificaCond(self, contexto):
         atacante = contexto["atacante"]
         alvo = contexto["alvo"]
@@ -65,12 +63,10 @@ class Efeitos:
             raise ValueError(
                 f"Condicao Desconhecida: {self.cond}"
             )
+        else:
+            raise ValueError(f"Condição desconhecida: {self.cond}")
 
-        if self.invertCond:
-            return not resultado
-
-        return resultado
-        
+        return not resultado if self.invertCond else resultado
 
         
 
