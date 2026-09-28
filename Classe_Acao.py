@@ -1,8 +1,11 @@
-class Acoes:
+from Classe_Entidade import Entidade
+
+
+class Acao(Entidade):
 
     def __init__(self, id, nome, tipo, categoria, dano, precisao,
                  efeitos=None, bloqueiaSequencia=False):
-        self.id = id
+        super().__init__(id)
         self.nome = nome
         self.tipo = tipo
         self.categoria = categoria
