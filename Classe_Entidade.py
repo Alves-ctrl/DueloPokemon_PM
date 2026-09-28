@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 
 class Entidade(ABC):
+
     def __init__(self, id=None):
         self.id = id
 
-    @abstractmethod
 
+    @abstractmethod
     def __str__(self):
-        pass
-        
+        return f"ID: {self.id}"
