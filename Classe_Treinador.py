@@ -1,16 +1,14 @@
-from Classe_Entidade import Entidade
 
-
-class Treinador(Entidade):
+class Treinador:
 
     def __init__(self, id=None, nome=""):
-        super().__init__(id)
+        self.id = id
         self.nome = nome
         self.times = []
 
     def __str__(self):
         return (
-            f"Treinador [{super().__str__()}, "
+            f"Treinador [ID: {self.id}, "
             f"Nome: {self.nome}, "
             f"Quantidade de times: {len(self.times)}]"
         )
@@ -45,7 +43,7 @@ class Treinador(Entidade):
         return None
 
     def listarTimes(self):
-        return self.times.copy()    
+        return self.times.copy()
 
 
 '''
