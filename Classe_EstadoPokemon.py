@@ -131,8 +131,8 @@ Atributos;
 pokemon	Pokemon	Referência ao Pokémon original.
 vidaAtual	int	Vida restante durante o combate.
 defesaAtual	float	Defesa percentual atual.
-ultimoAtaque	Acoes \| None	Último ataque que acertou.
-ultimoAtaqueTentado	Acoes \| None	Último ataque que o Pokémon tentou utilizar.
+ultimoAtaque	Acoes | None	Último ataque que acertou.
+ultimoAtaqueTentado	Acoes | None	Último ataque que o Pokémon tentou utilizar.
 efeitosAtivos	list[dict]	Registros dos efeitos temporários ativos.
  Métodos;
 __init__(pokemon)	;Inicializa os atributos temporários a partir do Pokémon original.
