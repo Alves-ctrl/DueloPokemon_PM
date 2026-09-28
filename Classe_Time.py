@@ -1,10 +1,8 @@
-from Classe_Entidade import Entidade
 
-
-class Time(Entidade):
+class Time:
 
     def __init__(self, id=None, nome="", treinador=None):
-        super().__init__(id)
+        self.id = id
         self.nome = nome
         self.treinador = treinador
         self.pokemons = []
@@ -13,7 +11,7 @@ class Time(Entidade):
         nomes = [pokemon.nome for pokemon in self.pokemons]
 
         return (
-            f"Time [{super().__str__()}, "
+            f"Time [ID: {self.id}, "
             f"Nome: {self.nome}, "
             f"Treinador: {self.treinador.nome if self.treinador else 'Nenhum'}, "
             f"Pokémons: {', '.join(nomes)}]"
@@ -47,8 +45,7 @@ class Time(Entidade):
         if pokemon is None:
             return False
 
-        # As posições começam em 1.
-        if type(nova_posicao) is not int:
+        if not isinstance(nova_posicao, int):
             return False
 
         if nova_posicao < 1 or nova_posicao > len(self.pokemons):
@@ -70,7 +67,6 @@ class Time(Entidade):
 
     def estaCompleto(self):
         return len(self.pokemons) == 3
-
 
 
 
