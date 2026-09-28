@@ -1,7 +1,7 @@
+from DAO_Entidade import EntidadeDAO
 from Classe_Pokemon import Pokemon
-from Classe_Acao import Acoes
+from Classe_Acao import Acao
 from Classe_Combate import Combate
-
 
 class Menu:
 
@@ -188,22 +188,63 @@ class Menu:
         pass
 
 
+  def escolher_time(self, nome_time):
+        time = []
+        print(f"\nEscolha os 3 Pokemons do {nome_time}:")
+        for i in range(3):
+            while True:
+                p = self.dao_pokemon.buscar(ler_int(f"{i + 1} Pokémon (ID): "))
+                if p is None:
+                    print("ID não encontrado.")
+                    continue
+                time.append(p)
+                break
+        return time
+
     def inserir_combate(self):
         print("\n--- Inserir Combate ---")
-        pass
+        ids = [c.id for c in self.dao_combate.carregar()]
+        combate = Combate(max(ids, default=0) + 1)
+        combate.definirTimes(self.escolher_time("Time A"),
+                             self.escolher_time("Time B"))
+        print(f"\nVencedor: {combate.duelar()}")
+        self.dao_combate.salvar(combate)
+        self.dao_combate.persistir()
 
     def alterar_combate(self):
-        print("\n--- Alterar Combate ---")
-        pass
+        print("\n--- Alterar Combate (ações) ---")
+        combate = self.dao_combate.buscar(ler_int("ID do combate: "))
+        if combate is None:
+            print("Combate não encontrado.")
+            return
+        for i, a in enumerate(combate.mostrarAcao()):
+            print(i, a)
+        indice = ler_int("Índice da ação a remover (-1 para cancelar): ")
+        acao = combate.buscarAcao(indice)
+        if acao and combate.delAcao(acao):
+            self.dao_combate.atualizar(combate)
+            self.dao_combate.persistir()
+            print("Ação removida do combate.")
 
     def excluir_combate(self):
         print("\n--- Excluir Combate ---")
-        pass
+        if self.dao_combate.apagar(ler_int("ID do combate: ")):
+            self.dao_combate.persistir()
+            print("Combate excluído.")
+        else:
+            print("Combate não encontrado.")
 
     def buscar_combate(self):
         print("\n--- Buscar Combate ---")
-        pass
+        c = self.dao_combate.buscar(ler_int("ID do combate: "))
+        if c is None:
+            print("Combate não encontrado.")
+            return
+        print(c)
+        for a in c.mostrarAcao():
+            print("  ", a)
 
     def listar_combates(self):
         print("\n--- Lista de Combates ---")
-        pass
+        for c in self.dao_combate.carregar():
+            print(c)
