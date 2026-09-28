@@ -10,11 +10,7 @@ class EstadoPokemon:
         self.efeitosAtivos = []
 
     def __str__(self):
-        nomes_efeitos = []
-
-        for registro in self.efeitosAtivos:
-            efeito = registro["efeito"]
-            nomes_efeitos.append(efeito.tipo)
+        nomes_efeitos = [r["efeito"].tipo for r in self.efeitosAtivos]
 
         return(
             f"EstadoPokemon [Nome: {self.pokemon.nome}, "
@@ -35,15 +31,15 @@ class EstadoPokemon:
         if valor < 0:
             return False
 
-        self.vidaAtual = min(self.vidaMax, self.vidaAtual + valor)
+       self.vidaAtual = min(self.pokemon.vidaMax, self.vidaAtual + valor)
     #pega o menor valor entre vida maxima e vida atual, pois a cura nao pode utrapassar a vida maxima
         return True
 
     def derrotado(self):
-        return self.vidaAtaul <= 0
+        return self.vidaAtual <= 0
 
     def atordoado(self):
-        return self.bsucarEfeito("ATORDOAMENTO") is not None
+        return self.buscarEfeito("ATORDOAMENTO") is not None
         #verifica se o pokemon esta com o efeito atordoamento ativo
 
     def addEfeito(self, efeito):
